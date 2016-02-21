@@ -46,7 +46,7 @@ class Item(db.Model):
 
     def from_dict(self, data):
         self.id = data.get('id')
-        self.label = unicode(data.get('label'), "utf-8")
+        self.label = data.get('label')
         self.type_id = data.get('type_id')
         self.created_at = datetime.datetime.now()
         decay = data.get('decay', None)
