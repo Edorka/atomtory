@@ -14,5 +14,11 @@ angular.module('atomtoryApp')
     function list(){
         return resource.getList();
     }
-    return {list: list};
+    function types(){
+        return Restangular.all('types').getList();
+    }
+    function create(item){
+        return resource.post(item);
+    }
+    return {list: list, types: types, create: create};
   });

@@ -1,0 +1,46 @@
+<md-dialog aria-label="Creating new item"   style="min-width:50%" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Complete item information</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="close()">X</md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-input-container class="md-block" flex-gt-xs>
+          <label>Description</label>
+          <input required md-maxlength="50" ng-model="item.label">
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+          <label>Type</label>
+          <md-select required ng-model="item.type_id">
+            <md-option ng-repeat="type in types" value="{{type.id}}">
+              {{type.label}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <label>Expiration type</label>
+        <md-radio-group ng-model="expireType" layout="row">
+            <md-radio-button value="none" >will not expire</md-radio-button>
+            <md-radio-button value="date">Specify date</md-radio-button>
+            <md-radio-button disabled value="fromdate">Set time to expire</md-radio-button>
+        </md-radio-group>
+        <md-input-container ng-if="expireType === 'date'" class="md-block" flex-gt-sm>
+          <label>Date of expiration</label>
+          <input type="date" ng-model="item.expires_at">
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="close()">
+        Cancel
+      </md-button>
+      <md-button class="md-primary" ng-click="submit(item)" style="margin-right:20px;">
+        Submit
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

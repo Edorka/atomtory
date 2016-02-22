@@ -1,13 +1,14 @@
 <div layout="column" ng-cloak>
-  <md-toolbar class="md-warn">
+  <md-toolbar class="md-primary">
     <div class="md-toolbar-tools">
-      <h2 class="md-flex">Atomtory: an inventory for atoms and isotopes</h2>
+      <h2 flex class="md-flex">Atomtory: an inventory for atoms and isotopes</h2>
+      <md-button class="md-secondary" ng-click="items.create()">Add new Item</md-button>
     </div>
   </md-toolbar>
   <md-content flex layout-padding>
     <md-list>
       <md-subheader class="md-no-sticky">{{items.list.length}} items on inventory</md-subheader>
-      <md-list-item class="md-3-line secondary-button-padding" ng-repeat="item in items.list">
+      <md-list-item class="fade md-3-line secondary-button-padding" ng-repeat="item in items.list">
         <div class="md-list-item-text" layout="column">
           <h3>{{item.label}}</h3>
           <h3 ng-if="item.type">{{item.type.label}}</h3>
