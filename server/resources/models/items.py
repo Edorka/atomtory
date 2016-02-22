@@ -2,6 +2,7 @@
 import datetime
 from . import db
 
+DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
 
 class TypeOfItem(db.Model):
     __tablename__ = 'types'
@@ -49,9 +50,17 @@ class Item(db.Model):
         self.label = data.get('label')
         self.type_id = data.get('type_id')
         self.created_at = datetime.datetime.now()
-        decay = data.get('decay', None)
-        if decay:
+        if 'expires_at' in data:
             try:
+                expiration_str = data.get('expires_at')
+                expiration =  datetime.datetime.strptime(expiration_str, DATE_FORMAT)
+                self.expires_at = expiration
+            except:
+                pass
+
+        elif 'decay' in data:
+            try:
+                decay = data.get('decay')
                 decay_time = datetime.timedelta(seconds=decay)
                 self.expires_at = self.created_at + decay_time
             except OverflowError:

@@ -23,17 +23,14 @@ angular.module('atomtoryApp')
     }
     vm.create = function(){
        $mdDialog.show({
-          clickOutsideToClose: true,
-          // Since GreetingController is instantiated with ControllerAs syntax
-          // AND we are passing the parent '$scope' to the dialog, we MUST
-          // use 'vm.<xxx>' in the template markup
-          templateUrl: 'views/new-item.html',
-          controller: 'NewItemCtrl',
-          locals:{
-            appendItem: vm.appendItem,
-            items: items,
-            types: vm.types
-          }
+            clickOutsideToClose: false,
+            templateUrl: 'views/new-item.html',
+            controller: 'NewItemCtrl',
+            locals:{
+                appendItem: vm.appendItem,
+                items: items,
+                types: vm.types
+            }
        });
     }
     vm.expirationOf = function(item){

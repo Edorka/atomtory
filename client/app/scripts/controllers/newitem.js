@@ -10,7 +10,9 @@
 angular.module('atomtoryApp')
   .controller('NewItemCtrl', function ($scope, $mdDialog, types, items, appendItem) {
     $scope.types = types;
-    $scope.closeDialog = function() {
+    $scope.item = {};
+    $scope.expireType = 'none';
+    $scope.close = function() {
         $mdDialog.hide();
     };
     $scope.submit = function(item){
