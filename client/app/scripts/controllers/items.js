@@ -11,17 +11,17 @@ angular.module('atomtoryApp')
   .controller('ItemsCtrl', function (items, $mdDialog) {
     var vm = this;
     this.list = [];
-    items.list().then(function(items){
+    items.list().then(function populateItemsList(items){
         vm.list = items;
     });
     this.types = [];
-    items.types().then(function(types){
+    items.types().then(function populateTypes(types){
         vm.types = types;
     });
-    this.appendItem = function(newItem){
+    this.appendItem = function prependInListn(newItem){
         vm.list.unshift(newItem);
-    }
-    vm.create = function(){
+    };
+    vm.create = function askNewData(){
        $mdDialog.show({
             clickOutsideToClose: false,
             templateUrl: 'views/new-item.html',
@@ -32,13 +32,13 @@ angular.module('atomtoryApp')
                 types: vm.types
             }
        });
-    }
-    vm.expirationOf = function(item){
-        if (! item.expires_at|| item.expires_at === 'None'){
-            return 'will virtually not expire'
+    };
+    vm.expirationOf = function putMessage(item){
+        // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+        if (! item.expires_at || item.expires_at === 'None'){
+            return 'will virtually not expire';
         } else {
-            return item.expires_at
+            return item.expires_at;
         }
-
-    }
+    };
   });

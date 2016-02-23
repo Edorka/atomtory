@@ -9,7 +9,6 @@
  */
 angular.module('atomtoryApp')
   .service('items', function (Restangular) {
-    console.log('items service running')
     var resource = Restangular.all('items');
     function list(){
         return resource.getList();

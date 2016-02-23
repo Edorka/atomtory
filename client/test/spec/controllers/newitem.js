@@ -1,23 +1,25 @@
 'use strict';
 
-describe('Controller: NewitemCtrl', function () {
+describe('Controller: NewItemCtrl', function () {
 
   // load the controller's module
   beforeEach(module('atomtoryApp'));
 
-  var NewitemCtrl,
-    scope;
+  var NewItemCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    NewitemCtrl = $controller('NewitemCtrl', {
+    NewItemCtrl = $controller('NewItemCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
-
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(NewitemCtrl.awesomeThings.length).toBe(3);
+  it('should instantiate a blank item to the scope', function () {
+    console.log('NewItemCtrl');
+    expect(NewItemCtrl.item).toBe({});
+  });
+  it('should toggle canSubmit flag when data is not valid', function () {
+    expect(NewItemCtrl.canSubmit).toBe(true);
   });
 });
