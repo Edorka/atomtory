@@ -11,6 +11,7 @@ angular.module('atomtoryApp')
   .controller('ItemsCtrl', function (items, $mdDialog) {
     var vm = this;
     this.list = [];
+    this.searchTerm = "";
     items.list().then(function populateItemsList(items){
         vm.list = items;
     });
