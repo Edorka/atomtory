@@ -8,7 +8,7 @@
  * Controller of the atomtoryApp
  */
 angular.module('atomtoryApp')
-  .controller('ItemsCtrl', function (items, $mdDialog) {
+  .controller('ItemsCtrl', function (items, $mdDialog, $mdToast) {
     var vm = this;
     this.list = [];
     this.searchTerm = "";
@@ -19,6 +19,17 @@ angular.module('atomtoryApp')
     items.types().then(function populateTypes(types){
         vm.types = types;
     });
+    this.retrieve = function retrieveItem(item){
+        item.remove().then(function allOK(e){
+            $mdToast.show($mdToast.simple()
+                .textContent('Retrieved '+item.label+'from inventory')
+                .theme("success-toast"));
+        }, function wentWrong(e){
+            $mdToast.show($mdToast.simple()
+                .textContent('Cant retrieve item')
+                .theme("error-toast"));
+        });
+    };
     this.appendItem = function prependInListn(newItem){
         vm.list.unshift(newItem);
     };
