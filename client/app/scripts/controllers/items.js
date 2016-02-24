@@ -21,8 +21,10 @@ angular.module('atomtoryApp')
     });
     this.retrieve = function retrieveItem(item){
         item.remove().then(function allOK(e){
+            var index = vm.list.indexOf(item);
+            vm.list.splice(index,1);
             $mdToast.show($mdToast.simple()
-                .textContent('Retrieved '+item.label+'from inventory')
+                .textContent('Retrieved '+item.label+'from inventory:' +e.message)
                 .theme("success-toast"));
         }, function wentWrong(e){
             $mdToast.show($mdToast.simple()
