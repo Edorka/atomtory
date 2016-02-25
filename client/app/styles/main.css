@@ -81,7 +81,12 @@ body {
     border-bottom: 0;
   }
 }
-
+md-toast.md-success-toast-theme  .md-toast-content{
+    background-color: darkgreen;
+}
+md-toast.md-error-toast-theme .md-toast-content{
+    background-color: darkred;
+}
 .fade {
   transition: 1s linear all;
   -webkit-transition: 1s linear all;
