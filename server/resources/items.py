@@ -1,6 +1,7 @@
 from .models.items import TypeOfItem, Item
 from flask import jsonify, request
 from flask.ext.restful import abort
+import datetime
 from . import api
 from .models import db
 
@@ -15,15 +16,21 @@ def get_item_types():
 @api.route('/items/<itemId>/', methods=['DELETE'])
 def retrieve_item(itemId):
     item = Item.query.filter_by(id=itemId).first()
-    print item
     if not item:
-        print item
         abort (404, message='item not found')
+    outdated = item.expire_date > datetime.now()
     try:
         db.session.delete(item)
-        return jsonify({'message': 'item succesfully retroeved'})
     except Exception, e:
-        abort(500, message=e.message)
+        print e
+        abort(501, message=e.message)
+    if not outdated:
+        return jsonify({'message': 'item succesfully retroeved'})
+    else:
+        response = jsonify({'message': 'resource outdated'})
+        response.status_code = 410
+        return response
+
 
 
 @api.route('/items/', methods=['GET'])

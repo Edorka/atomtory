@@ -20,16 +20,23 @@ angular.module('atomtoryApp')
         vm.types = types;
     });
     this.retrieve = function retrieveItem(item){
+        var index = vm.list.indexOf(item);
         item.remove().then(function allOK(e){
-            var index = vm.list.indexOf(item);
             vm.list.splice(index,1);
             $mdToast.show($mdToast.simple()
                 .textContent('Retrieved '+item.label+'from inventory:' +e.message)
                 .theme("success-toast"));
-        }, function wentWrong(e){
+        }, function wentWrong(response){
+            var message =  'Error while retrieving item';
+            if ( response && response.data ){
+                message = response.data.message || message;
+            }
             $mdToast.show($mdToast.simple()
-                .textContent('Cant retrieve item')
+                .textContent(message)
                 .theme("error-toast"));
+            if (response.status === 410){
+                vm.list.splice(index,1);
+            }
         });
     };
     this.appendItem = function prependInListn(newItem){
