@@ -1,11 +1,12 @@
-<div layout="column" ng-cloak>
-  <md-toolbar class="md-primary">
+<md-content flex layout="column" >
+  <md-toolbar class="md-medium-all">
     <div class="md-toolbar-tools">
       <h2 flex class="md-flex">Atomtory: an inventory for atoms and isotopes</h2>
       <md-button class="md-secondary" ng-click="items.create()">Add new Item</md-button>
     </div>
   </md-toolbar>
-  <md-content flex layout-padding>
+  <md-content flex layout="column" >
+    <div flex layout="column" style="height: 100%;">
     <section layout="row">
       <md-input-container class="md-block" flex-gt-xs>
         <label>Search</label>
@@ -24,5 +25,7 @@
         </div>
         <md-button class="md-secondary" ng-click="items.retrieve(item)">Retrieve</md-button>
       </md-list-item>
+    </md-list>
+    </div>
   </md-content>
-</div>
+</md-content>
