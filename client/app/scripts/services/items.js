@@ -9,10 +9,15 @@
  */
 angular.module('atomtoryApp')
   .service('items', function (Restangular) {
-    console.log('items service running')
     var resource = Restangular.all('items');
     function list(){
         return resource.getList();
     }
-    return {list: list};
+    function types(){
+        return Restangular.all('types').getList();
+    }
+    function create(item){
+        return resource.post(item);
+    }
+    return {list: list, types: types, create: create};
   });

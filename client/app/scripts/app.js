@@ -22,6 +22,7 @@ angular
   ])
   .config(function (RestangularProvider) {
         RestangularProvider.setBaseUrl('api/v1');
+        RestangularProvider.setRequestSuffix('/');
         RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response/*, deferred*/) {
             if (response.status === 200){
                 if (operation === 'getList' && angular.isObject(data) ){

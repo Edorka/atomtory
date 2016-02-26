@@ -1,13 +1,22 @@
-<div layout="column" ng-cloak>
-  <md-toolbar class="md-warn">
+<md-content flex layout="column" >
+  <md-toolbar class="md-medium-all">
     <div class="md-toolbar-tools">
-      <h2 class="md-flex">Atomtory: an inventory for atoms and isotopes</h2>
+      <h2 flex class="md-flex">Atomtory: an inventory for atoms and isotopes</h2>
+      <md-button class="md-secondary" ng-click="items.create()">Add new Item</md-button>
     </div>
   </md-toolbar>
-  <md-content flex layout-padding>
+  <md-content flex layout="column" >
+    <div flex layout="column" style="height: 100%;">
+    <section layout="row">
+      <md-input-container class="md-block" flex-gt-xs>
+        <label>Search</label>
+        <input required md-maxlength="50" ng-model="searchTerm">
+      </md-input-container>   
+    </section>
     <md-list>
       <md-subheader class="md-no-sticky">{{items.list.length}} items on inventory</md-subheader>
-      <md-list-item class="md-3-line secondary-button-padding" ng-repeat="item in items.list">
+      <md-list-item class="fade md-3-line secondary-button-padding" 
+        ng-repeat="item in items.list | filter:{ label: searchTerm } ">
         <div class="md-list-item-text" layout="column">
           <h3>{{item.label}}</h3>
           <h3 ng-if="item.type">{{item.type.label}}</h3>
@@ -16,5 +25,7 @@
         </div>
         <md-button class="md-secondary" ng-click="items.retrieve(item)">Retrieve</md-button>
       </md-list-item>
+    </md-list>
+    </div>
   </md-content>
-</div>
+</md-content>
