@@ -18,3 +18,35 @@ Currently no security features has been added but Angular, Restangular and Flask
 This system is configured to run with sqlite on development environment but it's recommended to upgrade into a proper SQL solution to prevent concurrency issues.
 
 Inmediate needs of this project will be written as github's issues, anyone is welcome to colaborate.
+
+#Installation instructions
+
+## Development environment
+
+Preparing back-end environment will requier python2.7 and virtualenv installed
+``` sh
+cd server
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+Before running must initialize database
+``` sh
+python manage.py importdb -t items
+```
+And then run the server itself
+``` sh
+python manage.py runserver
+```
+
+Front-end requires node.js, npm and bower to install required dependencies
+``` sh
+cd client
+npm install && bower install
+```
+Be advised that if error messages appears must insist on last intruction, if this would not work then delete node_modules and bower_components directories.
+
+``` sh
+grunt serve
+```
+This will run a dedicated web server and execute default browser
