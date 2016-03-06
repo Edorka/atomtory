@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import datetime
+from flask import url_for
 from . import db
+from sqlalchemy.orm import validates
 
 DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
 
@@ -36,6 +38,11 @@ class Item(db.Model):
                            foreign_keys=[type_id],
                               backref=db.backref('products', lazy='dynamic'))
 
+    @validates('label')
+    def validate_name(self, key, value):
+        assert value != ''
+        return value
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -66,6 +73,9 @@ class Item(db.Model):
             except OverflowError:
                 self.expires_at = None
 
+    def get_url(self):
+        return url_for('api.get_item', item_id=self.id,
+                       _external=True)
 
     def __repr__(self):
         return '<Item %r>' % self.id
