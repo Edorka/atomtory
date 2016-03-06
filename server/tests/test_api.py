@@ -37,6 +37,17 @@ class TestAPI(unittest.TestCase):
                                     data={'label': 'test one', 'type_id': testType.id})
         self.assertTrue(rv.status_code == 201)
 
+    def test_list_item_types(self):
+        testType = TypeOfItem()
+        testType.from_dict({'id': 1, 'label': 'testing type'})
+        db.session.add(testType)
+        db.session.commit()
+        rv, json = self.client.get(self.catalog['types_url'])
+        self.assertTrue(rv.status_code == 200)
+        #self.assertTrue(len(json.get('items')) == 1)
+        #self.assertTrue(testType.__repr__ == '<Type 1>')
+
+
     def test_add_items_insufficent(self):
         testType = TypeOfItem()
         testType.from_dict({'id': 1, 'label': 'testing type'})
@@ -50,24 +61,46 @@ class TestAPI(unittest.TestCase):
         # create several items
         rv, json = self.client.post(self.catalog['items_url'],
                                     data={'label': 'test two', 'type_id': 1})
-        print 'rv', rv, 'json', json
         self.assertTrue(rv.status_code == 201)
         one_url = json['Location']
         rv, json = self.client.post(self.catalog['items_url'],
-                                    data={'name': 'two'})
+                                    data={'label': 'two'})
         self.assertTrue(rv.status_code == 201)
-        two_url = rv.headers['Location']
+        two_url = json['Location']
         rv, json = self.client.post(self.catalog['items_url'],
-                                    data={'name': 'three'})
+                                    data={'label': 'three'})
         self.assertTrue(rv.status_code == 201)
-        three_url = rv.headers['Location']
+        three_url = json['Location']
         rv, json = self.client.post(self.catalog['items_url'],
-                                    data={'name': 'four'})
+                                    data={'label': 'four'})
         self.assertTrue(rv.status_code == 201)
-        four_url = rv.headers['Location']
+        four_url = json['Location']
         rv, json = self.client.post(self.catalog['items_url'],
-                                    data={'name': 'five'})
+                                    data={'label': 'five'})
         self.assertTrue(rv.status_code == 201)
-        five_url = rv.headers['Location']
-
+        five_url = json['Location']
         return [one_url, two_url, three_url, four_url, five_url]
+
+    def test_list_items(self):
+        urls = self._create_test_items();
+        rv, json = self.client.get(self.catalog['items_url'])
+        self.assertTrue(rv.status_code == 200)
+        for item in json['items']:
+            self.assertTrue(item['self_url'] in urls)
+            print item['self_url']
+            irv, ijson = self.client.get(item['self_url'])
+            self.assertTrue(irv.status_code == 200)
+
+    def test_delete_items(self):
+        import datetime
+        now = datetime.datetime.now()
+        expired_date = now - datetime.timedelta(hours=24, seconds=15)
+        rv, json = self.client.post(self.catalog['items_url'],
+                                    data={'label': 'inmediate expire',
+                                          'type_id': 1,
+                                          'expires_at': expired_date.isoformat()})
+        self.assertTrue(rv.status_code == 201)
+        rv, json = self.client.delete(json['Location'])
+        self.assertTrue(rv.status_code == 410)
+
+

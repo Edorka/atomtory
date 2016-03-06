@@ -4,7 +4,7 @@ from flask import url_for
 from . import db
 from sqlalchemy.orm import validates
 
-DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
+DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
 
 class TypeOfItem(db.Model):
     __tablename__ = 'types'
@@ -51,7 +51,8 @@ class Item(db.Model):
             'label': self.label,
             'type': self.of_type.to_dict() if self.of_type else None,
             'created_at': str(self.created_at),
-            'expires_at': str(self.expires_at)
+            'expires_at': str(self.expires_at),
+            'self_url': self.get_url()
         }
 
     def from_dict(self, data):
@@ -64,7 +65,8 @@ class Item(db.Model):
                 expiration_str = data.get('expires_at')
                 expiration =  datetime.datetime.strptime(expiration_str, DATE_FORMAT)
                 self.expires_at = expiration
-            except:
+            except Exception, e:
+                print e
                 pass
 
         elif 'decay' in data:
