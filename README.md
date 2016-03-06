@@ -28,7 +28,7 @@ Preparing back-end environment will requier python2.7 and virtualenv installed
 cd server
 virtualenv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements/prod.txt
 ```
 Before running must initialize database
 ``` sh
@@ -50,3 +50,17 @@ Be advised that if error messages appears must insist on last intruction, if thi
 grunt serve
 ```
 This will run a dedicated web server and execute default browser
+
+## Testing the project
+
+Before running tests the enviroment will need to be provided with some extra dependencies.
+
+``` sh
+cd server
+source venv/bin/activate
+pip install -r requirements/dev.txt
+```
+Then simply call the test command on the management console
+``` sh
+python manage.py test
+```
