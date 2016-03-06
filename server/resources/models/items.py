@@ -39,8 +39,10 @@ class Item(db.Model):
                               backref=db.backref('products', lazy='dynamic'))
 
     @validates('label')
-    def validate_name(self, key, value):
-        assert value != ''
+    def validate_label(self, key, value):
+        if not value:
+            raise ValueError( "Must set a label with a minimun length of 1")
+        assert value is not None and len(value) > 0
         return value
 
     def to_dict(self):

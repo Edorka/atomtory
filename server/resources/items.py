@@ -41,7 +41,7 @@ def get_items_list():
 
 @api.route('/items/<item_id>', methods=['GET'])
 def get_item(item_id):
-    item = itemItem.query.filter_by(id=itemId).first()
+    item = Item.query.filter_by(id=item_id).first()
     return jsonify(item.to_dict())
 
 
@@ -55,8 +55,7 @@ def add_to_items_list():
         db.session.commit()
         return make_response(jsonify(Location=new_record.get_url()), 201)
     except Exception, e:
-        print 'error', e
-        abort(422, message='cant create')
+        return make_response(jsonify(message='Cant create: '+ e.message), 422)
 
 
 

@@ -3,7 +3,7 @@ from werkzeug.exceptions import BadRequest
 from .test_client import TestClient
 from app import create_app
 from resources.models import db
-from resources.models.items import Item, TypeOfItem
+from resources.models.items import TypeOfItem
 
 
 class TestAPI(unittest.TestCase):
@@ -37,6 +37,14 @@ class TestAPI(unittest.TestCase):
                                     data={'label': 'test one', 'type_id': testType.id})
         self.assertTrue(rv.status_code == 201)
 
+    def test_add_items_insufficent(self):
+        testType = TypeOfItem()
+        testType.from_dict({'id': 1, 'label': 'testing type'})
+        db.session.add(testType)
+        db.session.commit()
+        rv, json = self.client.post(self.catalog['items_url'],
+                                    data={'label': '', 'type_id': testType.id})
+        self.assertTrue(rv.status_code == 422)
 
     def _create_test_items(self):
         # create several items
