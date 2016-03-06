@@ -17,5 +17,12 @@ def importdb(target=None, filename=None):
 def createdb():
     db.create_all()
 
+@manager.command
+def test():
+    from subprocess import call
+    call(['nosetests', '-v',
+          '--with-coverage', '--cover-package=resources', '--cover-branches',
+          '--cover-erase', '--cover-html', '--cover-html-dir=cover'])
+
 if __name__ == '__main__':
     manager.run()

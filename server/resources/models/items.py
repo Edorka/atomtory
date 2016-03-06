@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import datetime
+from flask import url_for
 from . import db
+from sqlalchemy.orm import validates
 
-DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
+DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
 
 class TypeOfItem(db.Model):
     __tablename__ = 'types'
@@ -36,13 +38,21 @@ class Item(db.Model):
                            foreign_keys=[type_id],
                               backref=db.backref('products', lazy='dynamic'))
 
+    @validates('label')
+    def validate_label(self, key, value):
+        if not value:
+            raise ValueError( "Must set a label with a minimun length of 1")
+        assert value is not None and len(value) > 0
+        return value
+
     def to_dict(self):
         return {
             'id': self.id,
             'label': self.label,
             'type': self.of_type.to_dict() if self.of_type else None,
             'created_at': str(self.created_at),
-            'expires_at': str(self.expires_at)
+            'expires_at': str(self.expires_at),
+            'self_url': self.get_url()
         }
 
     def from_dict(self, data):
@@ -55,7 +65,8 @@ class Item(db.Model):
                 expiration_str = data.get('expires_at')
                 expiration =  datetime.datetime.strptime(expiration_str, DATE_FORMAT)
                 self.expires_at = expiration
-            except:
+            except Exception, e:
+                print e
                 pass
 
         elif 'decay' in data:
@@ -66,6 +77,9 @@ class Item(db.Model):
             except OverflowError:
                 self.expires_at = None
 
+    def get_url(self):
+        return url_for('api.get_item', item_id=self.id,
+                       _external=True)
 
     def __repr__(self):
         return '<Item %r>' % self.id
