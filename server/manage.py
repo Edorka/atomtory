@@ -21,7 +21,7 @@ def createdb():
 def test():
     from subprocess import call
     call(['nosetests', '-v',
-          '--with-coverage', '--cover-package=api', '--cover-branches',
+          '--with-coverage', '--cover-package=resources', '--cover-branches',
           '--cover-erase', '--cover-html', '--cover-html-dir=cover'])
 
 if __name__ == '__main__':
